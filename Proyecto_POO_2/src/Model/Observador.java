@@ -1,5 +1,5 @@
 package Model;
 
 public interface Observador {
-    public void actualizar();
+    public void actualizar(int[] coords);
 }

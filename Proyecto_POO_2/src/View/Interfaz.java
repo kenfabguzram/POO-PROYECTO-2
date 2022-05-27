@@ -16,7 +16,7 @@ public class Interfaz extends JFrame implements KeyListener, Constantes{
     Controlador controlador;
    public Interfaz(){
         super();
-        controlador=new Controlador();
+        
         etiquetas=new JLabel[TAMANIO_MAPA_FILAS][TAMANIO_MAPA_COLUMNAS];
         setLayout(new GridLayout(TAMANIO_MAPA_FILAS,TAMANIO_MAPA_COLUMNAS));
         this.addKeyListener(this);
@@ -32,6 +32,7 @@ public class Interfaz extends JFrame implements KeyListener, Constantes{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         pack();
         setVisible(true);
+        controlador=new Controlador();
    }
 public void keyReleased(KeyEvent e) {controlador.keyReleased(e.getKeyCode());}
 public void keyTyped(KeyEvent e) {}
