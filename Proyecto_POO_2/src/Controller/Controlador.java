@@ -1,11 +1,14 @@
 package Controller;
 
 import Common.Constantes;
+import Model.PersonajePrincipal;
 import View.Interfaz;
 
 public class Controlador implements Constantes {
+    public static PersonajePrincipal personaje;
     public Controlador(){
-
+        personaje=new PersonajePrincipal();
+        setPersonajePrincipal(personaje.getCoords()[X],personaje.getCoords()[Y],ABAJO);
     }
     public void setPersonajePrincipal(int fila, int columna,int direccion){
         switch(direccion){
