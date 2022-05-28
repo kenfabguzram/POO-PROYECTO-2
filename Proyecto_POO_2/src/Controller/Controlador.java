@@ -5,79 +5,68 @@ import javax.swing.JLabel;
 import Common.Constantes;
 import Model.PersonajePrincipal;
 import View.Interfaz;
+import Model.Factory;
 
 public class Controlador implements Constantes {
     public static PersonajePrincipal personaje;
     private JLabel currentEtiqueta;
-    private JLabel lastEtiqueta;
     public Controlador(){
+        Factory factory= new Factory();
+        factory.crearEnemigo();
         personaje=new PersonajePrincipal();
         personaje.setDireccion(ABAJO);
-        currentEtiqueta=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
-        lastEtiqueta=Interfaz.etiquetas[personaje.getOldCoords()[X]][personaje.getOldCoords()[Y]];
+        actualizarCurrentEtiqueta();
         currentEtiqueta.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
     }
-
-    private void moveWithValidation(){
-        switch(personaje.getDireccion()){
-            case ARRIBA:
-                if(personaje.getCoords()[X]>0){
-                    personaje.move();
-                }
-                break;
-            case ABAJO:
-                if(personaje.getCoords()[X]<TAMANIO_MAPA_FILAS-1){
-                    personaje.move();
-                }
-                break;
-            case IZQUIERDA:
-                if(personaje.getCoords()[Y]>0){
-                    personaje.move();
-                }
-                break;
-            case DERECHA:
-                if(personaje.getCoords()[Y]<TAMANIO_MAPA_COLUMNAS-1){
-                    personaje.move();
-                }
-                break;
-        }
+    private void actualizarCurrentEtiqueta(){
         currentEtiqueta=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
-        lastEtiqueta=Interfaz.etiquetas[personaje.getOldCoords()[X]][personaje.getOldCoords()[Y]];
-        lastEtiqueta.setIcon(null);
     }
     public int getLastDirection(){
         return personaje.getDireccion();
     }
-    public void pintarCurrentEtiqueta(){
-        switch(personaje.getDireccion()){
+    public void setPersonajePrincipal(int fila, int columna,int direccion){
+        switch(direccion){
             case ARRIBA:
-                    currentEtiqueta.setIcon(ICONO_ARRIBA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
-                    break;
+                if(personaje.getDireccion()!=ARRIBA){
+                    personaje.setDireccion(ARRIBA);
+                    Interfaz.etiquetas[fila][columna].setIcon(ICONO_ARRIBA_PERSONAJE_PRINCIPAL);
+                    Interfaz.etiquetas[fila][columna].revalidate();
+                    Interfaz.etiquetas[fila][columna].repaint();
+                }
+                else
+                    personaje.move();
+                break;
             case ABAJO:
-                    currentEtiqueta.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
-                    break;
+                if(personaje.getDireccion()!=ABAJO){
+                    personaje.setDireccion(ABAJO);
+                    Interfaz.etiquetas[fila][columna].setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
+                    Interfaz.etiquetas[fila][columna].revalidate();
+                    Interfaz.etiquetas[fila][columna].repaint();
+                }
+                else
+                    personaje.move();
+                break;
             case IZQUIERDA:
-                    currentEtiqueta.setIcon(ICONO_IZQUIERDA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
-                    break;
+                if(personaje.getDireccion()!=IZQUIERDA){
+                    personaje.setDireccion(IZQUIERDA);
+                    Interfaz.etiquetas[fila][columna].setIcon(ICONO_IZQUIERDA_PERSONAJE_PRINCIPAL);
+                    Interfaz.etiquetas[fila][columna].revalidate();
+                    Interfaz.etiquetas[fila][columna].repaint();
+                }
+                else
+                    personaje.move();
+                break;
             case DERECHA:
-                    currentEtiqueta.setIcon(ICONO_DERECHA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
-                    break;
+                if(personaje.getDireccion()!=DERECHA){
+                    personaje.setDireccion(DERECHA);
+                    Interfaz.etiquetas[fila][columna].setIcon(ICONO_DERECHA_PERSONAJE_PRINCIPAL);
+                    Interfaz.etiquetas[fila][columna].revalidate();
+                    Interfaz.etiquetas[fila][columna].repaint();
+                }
+                else
+                    personaje.move();
+                break;
         }
-    }
-    private void despintarCurrentEtiqueta(){
-        currentEtiqueta=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
-        currentEtiqueta.setIcon(null);
-        currentEtiqueta.setBackground(COLOR_FONDO);
-        currentEtiqueta.revalidate();
-        currentEtiqueta.repaint();
     }
     public void setEnemigo(int fila, int columna,int direccion){
         switch(direccion){
@@ -98,7 +87,11 @@ public class Controlador implements Constantes {
     public void setAliado(int fila, int columna){
         Interfaz.etiquetas[fila][columna].setIcon(ICONO_ALIADO);
     }
+    public void resetEtiqueta(int fila,int columna){
+        Interfaz.etiquetas[fila][columna].setBackground(COLOR_FONDO);
+    }
     public void keyReleased(int codigoDeTecla){
+        actualizarCurrentEtiqueta();
         switch(codigoDeTecla){
             case ARRIBA:
                 if(personaje.getDireccion()!=ARRIBA){
@@ -108,11 +101,9 @@ public class Controlador implements Constantes {
                     currentEtiqueta.repaint();
                 }
                 else{
-                    despintarCurrentEtiqueta();
-                    moveWithValidation();
-                    pintarCurrentEtiqueta();
+
                 }
-                    
+                    //personaje.move();
                 break;
             case ABAJO:
                 if(personaje.getDireccion()!=ABAJO){
@@ -122,11 +113,9 @@ public class Controlador implements Constantes {
                     currentEtiqueta.repaint();
                 }
                 else{
-                    despintarCurrentEtiqueta();
-                    moveWithValidation();
-                    
-                    pintarCurrentEtiqueta();
+
                 }
+                    //personaje.move();
                 break;
             case IZQUIERDA:
                 if(personaje.getDireccion()!=IZQUIERDA){
@@ -136,11 +125,9 @@ public class Controlador implements Constantes {
                     currentEtiqueta.repaint();
                 }
                 else{
-                    despintarCurrentEtiqueta();
-                    moveWithValidation();
-                   
-                    pintarCurrentEtiqueta();
+
                 }
+                    //personaje.move();
                 break;
             case DERECHA:
                 if(personaje.getDireccion()!=DERECHA){
@@ -150,11 +137,9 @@ public class Controlador implements Constantes {
                     currentEtiqueta.repaint();
                 }
                 else{
-                    despintarCurrentEtiqueta();
-                    moveWithValidation();
-                    
-                    pintarCurrentEtiqueta();
+
                 }
+                    //personaje.move();
                 break;
             case ATACAR:
                 if(personaje.getDireccion()==DERECHA){
@@ -181,6 +166,7 @@ public class Controlador implements Constantes {
         }
     }
     public void keyPressed(int codigoDeTecla){
+        actualizarCurrentEtiqueta();
         if(codigoDeTecla==ATACAR){
             if(personaje.getDireccion()==DERECHA){ 
                 currentEtiqueta.setIcon(ICONO_ATACA_DERECHA_PERSONAJE_PRINCIPAL);
@@ -205,3 +191,4 @@ public class Controlador implements Constantes {
         }
     }
 }
+
