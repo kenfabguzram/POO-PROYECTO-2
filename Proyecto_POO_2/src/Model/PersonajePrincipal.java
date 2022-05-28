@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import Common.Constantes;
 
+
 public class PersonajePrincipal implements Observable, Serializable,Constantes{
     private int[] coords;
     private int[] oldCoords;
@@ -22,15 +23,24 @@ public class PersonajePrincipal implements Observable, Serializable,Constantes{
         direccion=ABAJO;
         observadores=new ArrayList<Observador>();
     }
+    
+    public int[] getOldCoords() {
+        return oldCoords;
+    }
+
+    public void setOldCoords(int[] oldCoords) {
+        this.oldCoords = oldCoords;
+    }
+
     public void move(){
         switch(direccion){
             case ARRIBA:
                 oldCoords[X]=coords[X];
-                coords[X]=coords[X]+1;
+                coords[X]=coords[X]-1;
                 break;
             case ABAJO:
                 oldCoords[X]=coords[X];
-                coords[X]=coords[X]-1;
+                coords[X]=coords[X]+1;
                 break;
             case IZQUIERDA:
                 oldCoords[Y]=coords[Y];
