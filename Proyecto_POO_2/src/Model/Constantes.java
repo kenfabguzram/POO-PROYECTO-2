@@ -1,4 +1,4 @@
-package Common;
+package Model;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
@@ -19,7 +19,9 @@ public interface Constantes {
     public static final int ALIADO=1;
     public static final int ENEMIGO=2;
     public static final int CANTIDAD_INICIAL_VIDA=15;
-
+    public static final int INTERVALO_DE_TURNOS_APARICION_DE_ENEMGOS=7;
+    public static final int INTERVALO_DE_TURNOS_APARICION_DE_ALIADOS=7;
+    public static final int CANTIDAD_MAXIMA_DE_ALIADOS=10;
     public static final Icon ICONO_ARRIBA_PERSONAJE_PRINCIPAL=
     new ImageIcon(new ImageIcon("images/linkMatricialArriba.jpg")
     .getImage()
@@ -62,22 +64,22 @@ public interface Constantes {
      
     
     public static final Icon ICONO_ARRIBA_ENEMIGO=
-    new ImageIcon(new ImageIcon("images/linkenemigoDerechaArriba.png")
+    new ImageIcon(new ImageIcon("images/enemigoArriba.jpg")
     .getImage()
     .getScaledInstance(27,29,Image.SCALE_DEFAULT));
      
     public static final Icon ICONO_ABAJO_ENEMIGO=
-    new ImageIcon(new ImageIcon("images/linkenemigoIzquierdaAbajo.png")
+    new ImageIcon(new ImageIcon("images/enemigoAbajo.jpg")
     .getImage()
     .getScaledInstance(27,29,Image.SCALE_DEFAULT));
      
     public static final Icon ICONO_DERECHA_ENEMIGO= 
-    new ImageIcon(new ImageIcon("images/linkenemigoDerechaArriba.png")
+    new ImageIcon(new ImageIcon("images/enemigoDerecha.jpg")
     .getImage()
     .getScaledInstance(27,29,Image.SCALE_DEFAULT));
     
     public static final Icon ICONO_IZQUIERDA_ENEMIGO= 
-    new ImageIcon(new ImageIcon("images/linkenemigoIzquierdaAbajo.png")
+    new ImageIcon(new ImageIcon("images/enemigoIzquierda.jpg")
     .getImage()
     .getScaledInstance(27,29,Image.SCALE_DEFAULT));
     

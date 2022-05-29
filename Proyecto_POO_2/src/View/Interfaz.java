@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
-import Common.Constantes;
 import Controller.Controlador;
+import Model.Constantes;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

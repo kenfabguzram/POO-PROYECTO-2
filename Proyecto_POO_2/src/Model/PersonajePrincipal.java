@@ -3,8 +3,6 @@ package Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import Common.Constantes;
-
 
 public class PersonajePrincipal implements Observable, Serializable,Constantes{
     private int[] coords;
@@ -23,7 +21,9 @@ public class PersonajePrincipal implements Observable, Serializable,Constantes{
         direccion=ABAJO;
         observadores=new ArrayList<Observador>();
     }
-    
+    public int getObserversSize(){
+        return observadores.size();
+    }
     public int[] getOldCoords() {
         return oldCoords;
     }
@@ -37,21 +37,24 @@ public class PersonajePrincipal implements Observable, Serializable,Constantes{
             case ARRIBA:
                 oldCoords[X]=coords[X];
                 coords[X]=coords[X]-1;
+                notificarObservadores();
                 break;
             case ABAJO:
                 oldCoords[X]=coords[X];
                 coords[X]=coords[X]+1;
+                notificarObservadores();
                 break;
             case IZQUIERDA:
                 oldCoords[Y]=coords[Y];
                 coords[Y]=coords[Y]-1;
+                notificarObservadores();
                 break;
             case DERECHA:  
                 oldCoords[Y]=coords[Y];
                 coords[Y]=coords[Y]+1;
+                notificarObservadores();
                 break;
         }
-        notificarObservadores();
     }
     public int getDireccion() {
         return direccion;
