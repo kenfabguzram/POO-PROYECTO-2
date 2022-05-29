@@ -36,25 +36,28 @@ public class Controlador implements Constantes {
             case ARRIBA:
                 if(personaje.getCoords()[X]>0){
                     personaje.move();
+                    turnos++;
                 }
                 break;
             case ABAJO:
                 if(personaje.getCoords()[X]<TAMANIO_MAPA_FILAS-1){
                     personaje.move();
+                    turnos++;
                 }
                 break;
             case IZQUIERDA:
                 if(personaje.getCoords()[Y]>0){
                     personaje.move();
+                    turnos++;
                 }
                 break;
             case DERECHA:
                 if(personaje.getCoords()[Y]<TAMANIO_MAPA_COLUMNAS-1){
                     personaje.move();
+                    turnos++;
                 }
                 break;
         }
-        turnos++;
         currentEtiquetaPersonajePrincipal=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
         lastEtiquetaPersonajePrincipal=Interfaz.etiquetas[personaje.getOldCoords()[X]][personaje.getOldCoords()[Y]];
         lastEtiquetaPersonajePrincipal.setIcon(null);
@@ -76,6 +79,8 @@ public class Controlador implements Constantes {
     public void actualizarEtiquetasEnemigos(){
         for(Enemigo enemigo:enemigos){
             despintarOldEnemigo(enemigo);
+        }
+        for(Enemigo enemigo:enemigos){
             pintarEnemigo(enemigo);
         }
     }
