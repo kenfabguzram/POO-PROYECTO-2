@@ -9,7 +9,6 @@ import Model.Constantes;
 import Model.Enemigo;
 import Model.PersonajePrincipal;
 import View.Interfaz;
-import Model.Factory;
 
 public class Controlador implements Constantes {
     public static int turnos;
@@ -25,61 +24,34 @@ public class Controlador implements Constantes {
         aliados=new ArrayList<Aliado>();
         enemigos=new ArrayList<Enemigo>();
         turnos=0;
-        Factory factory= new Factory();
-        factory.crearEnemigo();
         personaje=new PersonajePrincipal();
         personaje.setDireccion(ABAJO);
         currentEtiquetaPersonajePrincipal=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
         lastEtiquetaPersonajePrincipal=Interfaz.etiquetas[personaje.getOldCoords()[X]][personaje.getOldCoords()[Y]];
         currentEtiquetaPersonajePrincipal.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
     }
-    private void actualizarCurrentEtiqueta(){
-        currentEtiqueta=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
-    }
-    public int getLastDirection(){
-        return personaje.getDireccion();
-    }
-    public void setPersonajePrincipal(int fila, int columna,int direccion){
-        switch(direccion){
+
+    private void moveWithValidation(){
+        switch(personaje.getDireccion()){
             case ARRIBA:
-                if(personaje.getDireccion()!=ARRIBA){
-                    personaje.setDireccion(ARRIBA);
-                    Interfaz.etiquetas[fila][columna].setIcon(ICONO_ARRIBA_PERSONAJE_PRINCIPAL);
-                    Interfaz.etiquetas[fila][columna].revalidate();
-                    Interfaz.etiquetas[fila][columna].repaint();
-                }
-                else
+                if(personaje.getCoords()[X]>0){
                     personaje.move();
+                }
                 break;
             case ABAJO:
-                if(personaje.getDireccion()!=ABAJO){
-                    personaje.setDireccion(ABAJO);
-                    Interfaz.etiquetas[fila][columna].setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
-                    Interfaz.etiquetas[fila][columna].revalidate();
-                    Interfaz.etiquetas[fila][columna].repaint();
-                }
-                else
+                if(personaje.getCoords()[X]<TAMANIO_MAPA_FILAS-1){
                     personaje.move();
+                }
                 break;
             case IZQUIERDA:
-                if(personaje.getDireccion()!=IZQUIERDA){
-                    personaje.setDireccion(IZQUIERDA);
-                    Interfaz.etiquetas[fila][columna].setIcon(ICONO_IZQUIERDA_PERSONAJE_PRINCIPAL);
-                    Interfaz.etiquetas[fila][columna].revalidate();
-                    Interfaz.etiquetas[fila][columna].repaint();
-                }
-                else
+                if(personaje.getCoords()[Y]>0){
                     personaje.move();
+                }
                 break;
             case DERECHA:
-                if(personaje.getDireccion()!=DERECHA){
-                    personaje.setDireccion(DERECHA);
-                    Interfaz.etiquetas[fila][columna].setIcon(ICONO_DERECHA_PERSONAJE_PRINCIPAL);
-                    Interfaz.etiquetas[fila][columna].revalidate();
-                    Interfaz.etiquetas[fila][columna].repaint();
-                }
-                else
+                if(personaje.getCoords()[Y]<TAMANIO_MAPA_COLUMNAS-1){
                     personaje.move();
+                }
                 break;
         }
         turnos++;
@@ -192,11 +164,7 @@ public class Controlador implements Constantes {
     public void setAliado(int fila, int columna){
         Interfaz.etiquetas[fila][columna].setIcon(ICONO_ALIADO);
     }
-    public void resetEtiqueta(int fila,int columna){
-        Interfaz.etiquetas[fila][columna].setBackground(COLOR_FONDO);
-    }
     public void keyReleased(int codigoDeTecla){
-        actualizarCurrentEtiqueta();
         switch(codigoDeTecla){
             case ARRIBA:
                 if(personaje.getDireccion()!=ARRIBA){
@@ -206,9 +174,11 @@ public class Controlador implements Constantes {
                     currentEtiquetaPersonajePrincipal.repaint();
                 }
                 else{
-
+                    despintarCurrentEtiqueta();
+                    moveWithValidation();
+                    pintarCurrentEtiqueta();
                 }
-                    //personaje.move();
+                    
                 break;
             case ABAJO:
                 if(personaje.getDireccion()!=ABAJO){
@@ -218,9 +188,11 @@ public class Controlador implements Constantes {
                     currentEtiquetaPersonajePrincipal.repaint();
                 }
                 else{
-
+                    despintarCurrentEtiqueta();
+                    moveWithValidation();
+                    
+                    pintarCurrentEtiqueta();
                 }
-                    //personaje.move();
                 break;
             case IZQUIERDA:
                 if(personaje.getDireccion()!=IZQUIERDA){
@@ -230,9 +202,11 @@ public class Controlador implements Constantes {
                     currentEtiquetaPersonajePrincipal.repaint();
                 }
                 else{
-
+                    despintarCurrentEtiqueta();
+                    moveWithValidation();
+                   
+                    pintarCurrentEtiqueta();
                 }
-                    //personaje.move();
                 break;
             case DERECHA:
                 if(personaje.getDireccion()!=DERECHA){
@@ -242,9 +216,11 @@ public class Controlador implements Constantes {
                     currentEtiquetaPersonajePrincipal.repaint();
                 }
                 else{
-
+                    despintarCurrentEtiqueta();
+                    moveWithValidation();
+                    
+                    pintarCurrentEtiqueta();
                 }
-                    //personaje.move();
                 break;
             case ATACAR:
                 if(personaje.getDireccion()==DERECHA){
@@ -271,7 +247,6 @@ public class Controlador implements Constantes {
         }
     }
     public void keyPressed(int codigoDeTecla){
-        actualizarCurrentEtiqueta();
         if(codigoDeTecla==ATACAR){
             if(personaje.getDireccion()==DERECHA){ 
                 currentEtiquetaPersonajePrincipal.setIcon(ICONO_ATACA_DERECHA_PERSONAJE_PRINCIPAL);
@@ -296,4 +271,3 @@ public class Controlador implements Constantes {
         }
     }
 }
-
