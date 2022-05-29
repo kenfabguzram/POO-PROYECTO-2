@@ -1,21 +1,34 @@
 package Controller;
 
+import java.util.ArrayList;
+
 import javax.swing.JLabel;
 
-import Common.Constantes;
+import Model.Aliado;
+import Model.Constantes;
+import Model.Enemigo;
 import Model.PersonajePrincipal;
 import View.Interfaz;
 
 public class Controlador implements Constantes {
+    public static int turnos;
     public static PersonajePrincipal personaje;
-    private JLabel currentEtiqueta;
-    private JLabel lastEtiqueta;
+    private JLabel currentEtiquetaPersonajePrincipal;
+    private JLabel lastEtiquetaPersonajePrincipal;
+    private ArrayList<Enemigo> enemigos;
+    private ArrayList<Aliado> aliados;
+    Enemigo currentEnemigo;
+    Aliado currentAliado;
     public Controlador(){
+        
+        aliados=new ArrayList<Aliado>();
+        enemigos=new ArrayList<Enemigo>();
+        turnos=0;
         personaje=new PersonajePrincipal();
         personaje.setDireccion(ABAJO);
-        currentEtiqueta=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
-        lastEtiqueta=Interfaz.etiquetas[personaje.getOldCoords()[X]][personaje.getOldCoords()[Y]];
-        currentEtiqueta.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
+        currentEtiquetaPersonajePrincipal=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
+        lastEtiquetaPersonajePrincipal=Interfaz.etiquetas[personaje.getOldCoords()[X]][personaje.getOldCoords()[Y]];
+        currentEtiquetaPersonajePrincipal.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
     }
 
     private void moveWithValidation(){
@@ -41,9 +54,62 @@ public class Controlador implements Constantes {
                 }
                 break;
         }
-        currentEtiqueta=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
-        lastEtiqueta=Interfaz.etiquetas[personaje.getOldCoords()[X]][personaje.getOldCoords()[Y]];
-        lastEtiqueta.setIcon(null);
+        turnos++;
+        currentEtiquetaPersonajePrincipal=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
+        lastEtiquetaPersonajePrincipal=Interfaz.etiquetas[personaje.getOldCoords()[X]][personaje.getOldCoords()[Y]];
+        lastEtiquetaPersonajePrincipal.setIcon(null);
+        
+        if(turnos%INTERVALO_DE_TURNOS_APARICION_DE_ALIADOS==0 && personaje.getObserversSize()<CANTIDAD_MAXIMA_DE_ALIADOS){
+            currentAliado=new Aliado();
+            aliados.add(currentAliado);
+            personaje.agregarObservador(currentAliado);
+        }
+        if (turnos%INTERVALO_DE_TURNOS_APARICION_DE_ENEMGOS==0){
+            currentEnemigo=new Enemigo();
+            enemigos.add(currentEnemigo);
+            personaje.agregarObservador(currentEnemigo); 
+        }
+        actualizarEtiquetasEnemigos();
+
+
+    }
+    public void actualizarEtiquetasEnemigos(){
+        for(Enemigo enemigo:enemigos){
+            despintarOldEnemigo(enemigo);
+            pintarEnemigo(enemigo);
+        }
+    }
+    public void despintarOldEnemigo(Enemigo enemigo){
+        JLabel oldEtiqueta=Interfaz.etiquetas[enemigo.getLastPosition()[X]][enemigo.getLastPosition()[Y]];
+        oldEtiqueta.setIcon(null);
+        oldEtiqueta.setBackground(COLOR_FONDO);
+        oldEtiqueta.revalidate();
+        oldEtiqueta.repaint();
+    }
+    public void pintarEnemigo(Enemigo enemigo){
+        JLabel currentEtiquetaEnemigo=Interfaz.etiquetas[enemigo.getCurrentPosition()[X]][enemigo.getCurrentPosition()[Y]];
+        switch(enemigo.getDireccion()){
+            case ARRIBA:
+                currentEtiquetaEnemigo.setIcon(ICONO_ARRIBA_ENEMIGO);
+                currentEtiquetaEnemigo.revalidate();
+                currentEtiquetaEnemigo.repaint();
+                break;
+            case ABAJO:
+                currentEtiquetaEnemigo.setIcon(ICONO_ABAJO_ENEMIGO);
+                currentEtiquetaEnemigo.revalidate();
+                currentEtiquetaEnemigo.repaint();
+                break;
+            case IZQUIERDA:
+                currentEtiquetaEnemigo.setIcon(ICONO_IZQUIERDA_ENEMIGO);
+                currentEtiquetaEnemigo.revalidate();
+                currentEtiquetaEnemigo.repaint();
+                break;
+            case DERECHA:
+                currentEtiquetaEnemigo.setIcon(ICONO_DERECHA_ENEMIGO);
+                currentEtiquetaEnemigo.revalidate();
+                currentEtiquetaEnemigo.repaint();
+                break;
+        }
     }
     public int getLastDirection(){
         return personaje.getDireccion();
@@ -51,33 +117,33 @@ public class Controlador implements Constantes {
     public void pintarCurrentEtiqueta(){
         switch(personaje.getDireccion()){
             case ARRIBA:
-                    currentEtiqueta.setIcon(ICONO_ARRIBA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_ARRIBA_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                     break;
             case ABAJO:
-                    currentEtiqueta.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                     break;
             case IZQUIERDA:
-                    currentEtiqueta.setIcon(ICONO_IZQUIERDA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_IZQUIERDA_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                     break;
             case DERECHA:
-                    currentEtiqueta.setIcon(ICONO_DERECHA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_DERECHA_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                     break;
         }
     }
     private void despintarCurrentEtiqueta(){
-        currentEtiqueta=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
-        currentEtiqueta.setIcon(null);
-        currentEtiqueta.setBackground(COLOR_FONDO);
-        currentEtiqueta.revalidate();
-        currentEtiqueta.repaint();
+        currentEtiquetaPersonajePrincipal=Interfaz.etiquetas[personaje.getCoords()[X]][personaje.getCoords()[Y]];
+        currentEtiquetaPersonajePrincipal.setIcon(null);
+        currentEtiquetaPersonajePrincipal.setBackground(COLOR_FONDO);
+        currentEtiquetaPersonajePrincipal.revalidate();
+        currentEtiquetaPersonajePrincipal.repaint();
     }
     public void setEnemigo(int fila, int columna,int direccion){
         switch(direccion){
@@ -103,9 +169,9 @@ public class Controlador implements Constantes {
             case ARRIBA:
                 if(personaje.getDireccion()!=ARRIBA){
                     personaje.setDireccion(ARRIBA);
-                    currentEtiqueta.setIcon(ICONO_ARRIBA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_ARRIBA_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                 }
                 else{
                     despintarCurrentEtiqueta();
@@ -117,9 +183,9 @@ public class Controlador implements Constantes {
             case ABAJO:
                 if(personaje.getDireccion()!=ABAJO){
                     personaje.setDireccion(ABAJO);
-                    currentEtiqueta.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                 }
                 else{
                     despintarCurrentEtiqueta();
@@ -131,9 +197,9 @@ public class Controlador implements Constantes {
             case IZQUIERDA:
                 if(personaje.getDireccion()!=IZQUIERDA){
                     personaje.setDireccion(IZQUIERDA);
-                    currentEtiqueta.setIcon(ICONO_IZQUIERDA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_IZQUIERDA_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                 }
                 else{
                     despintarCurrentEtiqueta();
@@ -145,9 +211,9 @@ public class Controlador implements Constantes {
             case DERECHA:
                 if(personaje.getDireccion()!=DERECHA){
                     personaje.setDireccion(DERECHA);
-                    currentEtiqueta.setIcon(ICONO_DERECHA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_DERECHA_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                 }
                 else{
                     despintarCurrentEtiqueta();
@@ -158,24 +224,24 @@ public class Controlador implements Constantes {
                 break;
             case ATACAR:
                 if(personaje.getDireccion()==DERECHA){
-                    currentEtiqueta.setIcon(ICONO_DERECHA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_DERECHA_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                 }
                 if(personaje.getDireccion()==IZQUIERDA){
-                    currentEtiqueta.setIcon(ICONO_IZQUIERDA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_IZQUIERDA_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                 }
                 if(personaje.getDireccion()==ARRIBA){
-                    currentEtiqueta.setIcon(ICONO_ARRIBA_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_ARRIBA_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                 }
                 if(personaje.getDireccion()==ABAJO){
-                    currentEtiqueta.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
-                    currentEtiqueta.revalidate();
-                    currentEtiqueta.repaint();
+                    currentEtiquetaPersonajePrincipal.setIcon(ICONO_ABAJO_PERSONAJE_PRINCIPAL);
+                    currentEtiquetaPersonajePrincipal.revalidate();
+                    currentEtiquetaPersonajePrincipal.repaint();
                 }
                 break;
         }
@@ -183,24 +249,24 @@ public class Controlador implements Constantes {
     public void keyPressed(int codigoDeTecla){
         if(codigoDeTecla==ATACAR){
             if(personaje.getDireccion()==DERECHA){ 
-                currentEtiqueta.setIcon(ICONO_ATACA_DERECHA_PERSONAJE_PRINCIPAL);
-                currentEtiqueta.revalidate();
-                currentEtiqueta.repaint();
+                currentEtiquetaPersonajePrincipal.setIcon(ICONO_ATACA_DERECHA_PERSONAJE_PRINCIPAL);
+                currentEtiquetaPersonajePrincipal.revalidate();
+                currentEtiquetaPersonajePrincipal.repaint();
             }
             if(personaje.getDireccion()==IZQUIERDA){ 
-                currentEtiqueta.setIcon(ICONO_ATACA_IZQUIERDA_PERSONAJE_PRINCIPAL);
-                currentEtiqueta.revalidate();
-                currentEtiqueta.repaint();
+                currentEtiquetaPersonajePrincipal.setIcon(ICONO_ATACA_IZQUIERDA_PERSONAJE_PRINCIPAL);
+                currentEtiquetaPersonajePrincipal.revalidate();
+                currentEtiquetaPersonajePrincipal.repaint();
             }
             if(personaje.getDireccion()==ARRIBA){ 
-                currentEtiqueta.setIcon(ICONO_ATACA_ARRIBA_PERSONAJE_PRINCIPAL);
-                currentEtiqueta.revalidate();
-                currentEtiqueta.repaint();
+                currentEtiquetaPersonajePrincipal.setIcon(ICONO_ATACA_ARRIBA_PERSONAJE_PRINCIPAL);
+                currentEtiquetaPersonajePrincipal.revalidate();
+                currentEtiquetaPersonajePrincipal.repaint();
             }
             if(personaje.getDireccion()==ABAJO){ 
-                currentEtiqueta.setIcon(ICONO_ATACA_ABAJO_PERSONAJE_PRINCIPAL);
-                currentEtiqueta.revalidate();
-                currentEtiqueta.repaint();
+                currentEtiquetaPersonajePrincipal.setIcon(ICONO_ATACA_ABAJO_PERSONAJE_PRINCIPAL);
+                currentEtiquetaPersonajePrincipal.revalidate();
+                currentEtiquetaPersonajePrincipal.repaint();
             }
         }
     }
