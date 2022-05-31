@@ -3,6 +3,7 @@ package View;
 import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import Controller.Controlador;
@@ -37,7 +38,13 @@ public class Interfaz extends JFrame implements KeyListener, Constantes{
         setVisible(true);
         controlador=new Controlador();
     }
-    public void keyReleased(KeyEvent e) {controlador.keyReleased(e.getKeyCode());}
+    public void keyReleased(KeyEvent e) {
+        controlador.keyReleased(e.getKeyCode());
+        if(Controlador.personaje.getVida()==0){
+            JOptionPane.showMessageDialog(this, "Has perdido!");
+            dispose();
+        }
+    }
     public void keyTyped(KeyEvent e) {}
     public void keyPressed(KeyEvent e) {controlador.keyPressed(e.getKeyCode());}
 }

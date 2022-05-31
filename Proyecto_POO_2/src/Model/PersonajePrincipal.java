@@ -1,10 +1,10 @@
 package Model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class PersonajePrincipal implements Observable, Serializable,Constantes{
+
+public class PersonajePrincipal implements Constantes{
     private int[] coords;
     private int[] oldCoords;
     private ArrayList<Observador> observadores;
@@ -20,6 +20,9 @@ public class PersonajePrincipal implements Observable, Serializable,Constantes{
         oldCoords[Y]=0;
         direccion=ABAJO;
         observadores=new ArrayList<Observador>();
+    }
+    public void agregarVida(){
+        vida++;
     }
     public int getObserversSize(){
         return observadores.size();
@@ -42,6 +45,7 @@ public class PersonajePrincipal implements Observable, Serializable,Constantes{
             case ABAJO:
                 oldCoords[X]=coords[X];
                 coords[X]=coords[X]+1;
+                
                 notificarObservadores();
                 break;
             case IZQUIERDA:
@@ -72,12 +76,13 @@ public class PersonajePrincipal implements Observable, Serializable,Constantes{
         this.vida = vida;
     }
 
-    @Override
     public void agregarObservador(Observador o) {
         observadores.add(o);
         
     }
-
+    public void reducirVida(){
+        vida--;
+    }
     public int[] getCoords() {
         return coords;
     }
@@ -86,16 +91,16 @@ public class PersonajePrincipal implements Observable, Serializable,Constantes{
         this.coords = coords;
     }
 
-    @Override
+
     public void borrarObservador(Observador o) {
         observadores.remove(o);
         
     }
 
-    @Override
+
     public void notificarObservadores() {
         for (Observador o:observadores){
-            o.actualizar(coords);
+            o.actualizar();
         }
         
     }

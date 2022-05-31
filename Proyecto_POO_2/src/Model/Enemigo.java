@@ -1,16 +1,16 @@
 package Model;
+
 import java.util.Random;
 
+import Controller.Controlador;
 import View.Interfaz;
 
-public class Enemigo implements Observador,Constantes{
+public class Enemigo implements Observador,Constantes,Generico{
     private int[] currentPosition;
     private int[] lastPosition;
     private int direccion;
-    PersonajePrincipal personaje;
     Random random;
     public Enemigo(){
-        personaje=new PersonajePrincipal();
         currentPosition=new int[2];
         lastPosition=new int[2];
         random=new Random();
@@ -47,8 +47,7 @@ public class Enemigo implements Observador,Constantes{
         this.direccion = direccion;
     }
 
-    public void actualizar(int[] coords) {
-        personaje.setCoords(coords);
+    public void actualizar() {
         move();
         
     }
@@ -58,32 +57,31 @@ public class Enemigo implements Observador,Constantes{
         Random random = new Random();
         int rand = random.nextInt(1 + 0 + 1 ) + 0;
     
-        if(personaje.getCoords()[X] != currentPosition[X]){
-            if(personaje.getCoords()[Y] != currentPosition[Y]){
+        if(Controlador.personaje.getCoords()[X] != currentPosition[X]){
+            if(Controlador.personaje.getCoords()[Y] != currentPosition[Y]){
                 if(rand==0){
-                    currentPosition[X] += (personaje.getCoords()[X]-currentPosition[X])/Math.abs(personaje.getCoords()[X]-currentPosition[X]);
+                    currentPosition[X] += (Controlador.personaje.getCoords()[X]-currentPosition[X])/Math.abs(Controlador.personaje.getCoords()[X]-currentPosition[X]);
                     direccion=lastPosition[X]<currentPosition[X]?ABAJO:ARRIBA;
                 }
                 else{
-                    currentPosition[Y] += (personaje.getCoords()[Y]-currentPosition[Y])/Math.abs(personaje.getCoords()[Y]-currentPosition[Y]);
+                    currentPosition[Y] += (Controlador.personaje.getCoords()[Y]-currentPosition[Y])/Math.abs(Controlador.personaje.getCoords()[Y]-currentPosition[Y]);
                     direccion=lastPosition[Y]<currentPosition[Y]?DERECHA:IZQUIERDA;
                 }
             }
             
             else{
-                currentPosition[X] += (personaje.getCoords()[X]-currentPosition[X])/Math.abs(personaje.getCoords()[X]-currentPosition[X]);
+                currentPosition[X] += (Controlador.personaje.getCoords()[X]-currentPosition[X])/Math.abs(Controlador.personaje.getCoords()[X]-currentPosition[X]);
                 direccion=lastPosition[X]<currentPosition[X]?ABAJO:ARRIBA;
             }
         }
-        else{
-            if(personaje.getCoords()[Y] != currentPosition[Y]){
-                currentPosition[Y] += (personaje.getCoords()[Y]-currentPosition[Y])/Math.abs(personaje.getCoords()[Y]-currentPosition[Y]);
+        else if(Controlador.personaje.getCoords()[Y] != currentPosition[Y]){
+                currentPosition[Y] += (Controlador.personaje.getCoords()[Y]-currentPosition[Y])/Math.abs(Controlador.personaje.getCoords()[Y]-currentPosition[Y]);
                 direccion=lastPosition[Y]<currentPosition[Y]?DERECHA:IZQUIERDA;
             }
-            else{
-                
-            }
+        if(currentPosition[X]==Controlador.personaje.getCoords()[X] & currentPosition[Y]==Controlador.personaje.getCoords()[Y]){
+            Controlador.personaje.reducirVida();
+            Controlador.enemigosEliminar.add(this);
         }
-
     }
+
 }

@@ -7,6 +7,7 @@ import java.awt.Image;
 public interface Constantes {
     public static final int X=0;
     public static final int Y=1;
+    public static final int RANGO_APARICION_ALIADO=5;
     public static final int TAMANIO_MAPA_COLUMNAS=50;
     public static final int TAMANIO_MAPA_FILAS=25;
     public static final Color COLOR_FONDO=Color.BLACK;
@@ -15,11 +16,10 @@ public interface Constantes {
     public static final int DERECHA=39;
     public static final int ABAJO=40;
     public static final int ATACAR=10;
-    public static final int PERSONAJE=0;
     public static final int ALIADO=1;
     public static final int ENEMIGO=2;
     public static final int CANTIDAD_INICIAL_VIDA=15;
-    public static final int INTERVALO_DE_TURNOS_APARICION_DE_ENEMGOS=7;
+    public static final int INTERVALO_DE_TURNOS_APARICION_DE_ENEMIGOS=7;
     public static final int INTERVALO_DE_TURNOS_APARICION_DE_ALIADOS=7;
     public static final int CANTIDAD_MAXIMA_DE_ALIADOS=10;
     public static final Icon ICONO_ARRIBA_PERSONAJE_PRINCIPAL=
