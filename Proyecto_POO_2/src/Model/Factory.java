@@ -5,7 +5,7 @@ public class Factory implements Constantes {
 
     public Factory(){}
 
-    public Generico crear(int codigo){
+    public Observador crear(int codigo){
         switch(codigo){
             case ALIADO:
                 return new Aliado();

@@ -5,7 +5,7 @@ import java.util.Random;
 import Controller.Controlador;
 import View.Interfaz;
 
-public class Aliado implements Observador,Constantes,Generico{
+public class Aliado implements Observador,Constantes{
     private int[] currentPosition;
     private boolean visible;
     Random random;

@@ -5,7 +5,7 @@ import java.util.Random;
 import Controller.Controlador;
 import View.Interfaz;
 
-public class Enemigo implements Observador,Constantes,Generico{
+public class Enemigo implements Observador,Constantes{
     private int[] currentPosition;
     private int[] lastPosition;
     private int direccion;
