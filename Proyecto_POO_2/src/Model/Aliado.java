@@ -8,7 +8,7 @@ import View.Interfaz;
 public class Aliado implements Observador,Constantes{
     private int[] currentPosition;
     private boolean visible;
-    Random random;
+    private Random random;
     public Aliado(){
         currentPosition=new int[2];
         random=new Random();

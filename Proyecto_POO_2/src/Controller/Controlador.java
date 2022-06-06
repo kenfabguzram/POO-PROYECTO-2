@@ -157,9 +157,6 @@ public class Controlador implements Constantes {
                 break;
         }
     }
-    public int getLastDirection(){
-        return personaje.getDireccion();
-    }
     public void pintarCurrentEtiqueta(){
         switch(personaje.getDireccion()){
             case ARRIBA:
@@ -191,25 +188,7 @@ public class Controlador implements Constantes {
         currentEtiquetaPersonajePrincipal.revalidate();
         currentEtiquetaPersonajePrincipal.repaint();
     }
-    public void setEnemigo(int fila, int columna,int direccion){
-        switch(direccion){
-            case ARRIBA:
-                Interfaz.etiquetas[fila][columna].setIcon(ICONO_ARRIBA_ENEMIGO);
-                break;
-            case ABAJO:
-                Interfaz.etiquetas[fila][columna].setIcon(ICONO_ABAJO_ENEMIGO);
-                break;
-            case IZQUIERDA:
-                Interfaz.etiquetas[fila][columna].setIcon(ICONO_IZQUIERDA_ENEMIGO);
-                break;
-            case DERECHA:
-                Interfaz.etiquetas[fila][columna].setIcon(ICONO_DERECHA_ENEMIGO);
-                break;
-        }
-    }
-    public void setAliado(int fila, int columna){
-        Interfaz.etiquetas[fila][columna].setIcon(ICONO_ALIADO);
-    }
+  
     public void keyReleased(int codigoDeTecla){
         switch(codigoDeTecla){
             case ARRIBA:

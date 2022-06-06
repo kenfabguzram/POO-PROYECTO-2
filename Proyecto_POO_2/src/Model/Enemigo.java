@@ -48,10 +48,6 @@ public class Enemigo implements Observador,Constantes{
     }
 
     public void actualizar() {
-        move();
-        
-    }
-    public void move(){
         lastPosition[X] = currentPosition[X];
         lastPosition[Y] = currentPosition[Y];
         Random random = new Random();
@@ -82,6 +78,8 @@ public class Enemigo implements Observador,Constantes{
             Controlador.personaje.reducirVida();
             Controlador.enemigosEliminar.add(this);
         }
+        
     }
+
 
 }

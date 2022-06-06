@@ -30,11 +30,9 @@ public class PersonajePrincipal implements Constantes{
     public int[] getOldCoords() {
         return oldCoords;
     }
-
     public void setOldCoords(int[] oldCoords) {
         this.oldCoords = oldCoords;
     }
-
     public void move(){
         switch(direccion){
             case ARRIBA:
@@ -63,19 +61,15 @@ public class PersonajePrincipal implements Constantes{
     public int getDireccion() {
         return direccion;
     }
-
     public void setDireccion(int direccion) {
         this.direccion = direccion;
     }
-
     public int getVida() {
         return vida;
     }
-
     public void setVida(int vida) {
         this.vida = vida;
     }
-
     public void agregarObservador(Observador o) {
         observadores.add(o);
         
@@ -86,22 +80,16 @@ public class PersonajePrincipal implements Constantes{
     public int[] getCoords() {
         return coords;
     }
-
     public void setCoords(int[] coords) {
         this.coords = coords;
     }
-
-
     public void borrarObservador(Observador o) {
         observadores.remove(o);
         
     }
-
-
     public void notificarObservadores() {
         for (Observador o:observadores){
             o.actualizar();
-        }
-        
+        }  
     }
 }
